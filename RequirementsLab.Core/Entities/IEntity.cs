@@ -1,0 +1,7 @@
+﻿namespace RequirementsLab.Core.Entities
+{
+    public interface IEntity
+    {
+        int Id { get; set; }
+    }
+}
