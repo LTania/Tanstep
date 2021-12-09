@@ -8,6 +8,8 @@ namespace RequirementsLab.Core.Entities
 
         public int Difficulty { get; set; }
 
+        public string Title { get; set; }
+
         public string Description { get; set; }
 
         public TaskType TaskType { get; set; }

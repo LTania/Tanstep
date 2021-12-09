@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RequirementsLab.DAL\RequirementsLab.DAL.csproj" />
+    <ProjectReference Include="..\RequirementsLab.Services\RequirementsLab.Services.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

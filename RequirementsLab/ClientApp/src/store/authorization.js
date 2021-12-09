@@ -14,6 +14,7 @@ export const OPEN_REGISTER = 'OPEN_REGISTER';
 export const CHECK_AUTHORIZATION_BEGIN = 'CHECK_AUTHORIZATION_BEGIN';
 export const CHECK_AUTHORIZATION_SUCCESS = 'CHECK_AUTHORIZATION_SUCCESS';
 export const CHECK_AUTHORIZATION_ERROR = 'CHECK_AUTHORIZATION_ERROR';
+export const MARK_TEST_FINISHED = 'MARK_TEST_FINISHED';
 
 export function login(data) {
   return dispatch => {
@@ -110,6 +111,14 @@ export function openRegister() {
   };
 }
 
+export function markTestFinished() {
+  return dispatch => {
+    dispatch({
+      type: MARK_TEST_FINISHED,
+    });
+  };
+}
+
 export const registerBegin = () => ({
   type: REGISTER_BEGIN,
 });
@@ -159,6 +168,7 @@ export const authorizationState = {
   loggedIn: false,
   userId: null,
   error: null,
+  startingLevelTestPassed: false,
   loading: false,
   isRegistering: false,
 };
@@ -214,14 +224,20 @@ export const authorizationReducer = (state = authorizationState, action) => {
         isRegistering: true,
       };
 
+    case MARK_TEST_FINISHED:
+      return {
+        ...state,
+        startingLevelTestPassed: true,
+      };
+
     case CHECK_AUTHORIZATION_SUCCESS:
-      const userId = action.payload;
-      const loggedIn = (userId !== -1);
+      const { userId, loggedIn, startingLevelTestPassed } = action.payload;
 
       return {
         ...state,
         checked: true,
         loggedIn,
+        startingLevelTestPassed,
         userId: loggedIn ? userId : null,
       };
 

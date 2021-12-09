@@ -10,6 +10,7 @@ function Wrapper(ComposedComponent) {
       dispatch,
       loggedIn,
       checked,
+      startingLevelTestPassed,
       //loading,
       //error, // TODO render error, loading
     } = props;
@@ -21,9 +22,15 @@ function Wrapper(ComposedComponent) {
         <Redirect to={{ pathname: "/authorization", state: { nextPathname: props.location.pathname } }} />
       );
     } else {
-      return (
-        <ComposedComponent {...props} />
-      );
+      if (startingLevelTestPassed || props.location.pathname === '/test') {
+        return (
+          <ComposedComponent {...props} />
+        );
+      } else {
+        return (
+          <Redirect to={{ pathname: "/test", state: { nextPathname: props.location.pathname } }} />
+        );
+      }
     }
 
     return null;
@@ -34,6 +41,7 @@ const mapStateToProps = (state) => {
   const {
     loggedIn,
     checked,
+    startingLevelTestPassed,
     loading,
     error,
   } = state.authorization;
@@ -41,6 +49,7 @@ const mapStateToProps = (state) => {
   return {
     loggedIn,
     checked,
+    startingLevelTestPassed,
     loading,
     error,
   };

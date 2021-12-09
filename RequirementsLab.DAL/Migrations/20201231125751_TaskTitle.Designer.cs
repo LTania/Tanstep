@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RequirementsLab.DAL;
 
 namespace RequirementsLab.DAL.Migrations
 {
     [DbContext(typeof(RequirementsLabContext))]
-    partial class RequirementsLabContextModelSnapshot : ModelSnapshot
+    [Migration("20201231125751_TaskTitle")]
+    partial class TaskTitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,9 +173,6 @@ namespace RequirementsLab.DAL.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("RequirementId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
 
@@ -246,24 +245,6 @@ namespace RequirementsLab.DAL.Migrations
                     b.HasIndex("TaskId");
 
                     b.ToTable("Requirements");
-                });
-
-            modelBuilder.Entity("RequirementsLab.Core.Entities.RequirementForPWTask", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("TaskId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RequirementsForPWTask");
                 });
 
             modelBuilder.Entity("RequirementsLab.Core.Entities.RequirementKeyWord", b =>

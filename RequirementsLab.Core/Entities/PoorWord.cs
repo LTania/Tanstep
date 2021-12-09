@@ -8,6 +8,8 @@ namespace RequirementsLab.Core.Entities
 
         public string Text { get; set; }
 
+        public int RequirementId { get; set; }
+
         public List<PoorWordTask> PoorWordTasks { get; set; }
     }
 }

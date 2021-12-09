@@ -6,9 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RequirementsLab.Core.Abstractions;
 using Microsoft.OpenApi.Models;
 using RequirementsLab.Core.Entities;
 using RequirementsLab.DAL;
+using RequirementsLab.Services;
 
 namespace RequirementsLab
 {
@@ -23,6 +25,14 @@ namespace RequirementsLab
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<ILevelTestService, LevelTestService>();
+            services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<IRequirementsService, RequirementsService>();
+            services.AddScoped<IResultsService, ResultsService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IPoorWordsService, PoorWordsService>();
+
+
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<RequirementsLabContext>(options => options.UseSqlServer(connectionString));
@@ -60,7 +70,8 @@ namespace RequirementsLab
                 options.AddPolicy("AllowEverything", builder =>
                     builder.AllowAnyOrigin()
                            .AllowAnyMethod()
-                           .AllowAnyHeader());
+                           .AllowAnyHeader()
+                           .WithOrigins("http://localhost:44368"));
             });
         }
 
@@ -87,7 +98,7 @@ namespace RequirementsLab
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Geolocation V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "RequirementsLab V1");
             });
 
             app.UseRouting();
@@ -95,19 +106,19 @@ namespace RequirementsLab
             app.UseAuthentication();
             app.UseAuthorization();
 
+            /*
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
             });
+            */
 
-            /*
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-            */
 
             app.UseSpa(spa =>
             {

@@ -5,9 +5,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import composeStyles from '../utils/composeStyles';
 import { AppTheme } from '../utils/colors';
 import MenuIcon from '@material-ui/icons/Menu';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import './NavMenu.css';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   navbar: {
     backgroundColor: AppTheme.navBg,
   },
@@ -17,9 +18,9 @@ const useStyles = makeStyles({
       color: AppTheme.navTextHovered,
     },
   },
-  logo: {
+  logoBar: {
+    fontSize: '2em',
     color: AppTheme.navText,
-    fontSize: '1.5em',
     '&:hover, &:focus': {
       color: AppTheme.navTextHovered,
     },
@@ -31,7 +32,35 @@ const useStyles = makeStyles({
       color: AppTheme.navTextHovered,
     },
   },
-});
+  logo: {
+    height: '2.5em',
+    margin: '0 0.5em',
+  },
+  topMenuGroup: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    [theme.breakpoints.down('xs')]: {
+      width: '100%',
+    },
+  },
+  balancer: {
+    width: '30px',
+    height: '30px',
+  },
+  navigation: {
+    flexGrow: '0',
+    position: 'absolute',
+    right: '0',
+    [theme.breakpoints.down('xs')]: {
+      position: 'unset',
+    },
+  },
+  navContainer: {
+    justifyContent: 'center !important',
+    position: 'relative',
+  },
+}));
 
 export class NavMenuComponent extends React.Component {
   state = {
@@ -53,38 +82,46 @@ export class NavMenuComponent extends React.Component {
           'box-shadow',
           'mb-3',
         ])}>
-          <Container>
-            <NavbarBrand
-              tag={Link}
-              className={composeStyles([
-                classes.logo,
-                //'mx-auto',
-              ])}
-              to="/">
-              LP NU
-            </NavbarBrand>
+          <Container className={classes.navContainer}>
+            <div className={classes.topMenuGroup}>
+              <div className={classes.balancer} />
 
-            <MenuIcon
-              onClick={this.toggle}
-              className={composeStyles([
-                classes.hamburger,
-                'd-sm-none',
-              ])}
-              fontSize="large"
-            />
+              <NavbarBrand
+                tag={Link}
+                className={composeStyles([
+                  classes.logoBar,
+                  //'mx-auto',
+                ])}
+                to="/">
+                <img src="logo.jpg" alt="logo" className={classes.logo} />
+              </NavbarBrand>
 
-            <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
+              <MenuIcon
+                onClick={this.toggle}
+                className={composeStyles([
+                  classes.hamburger,
+                  'd-sm-none',
+                ])}
+                fontSize="large"
+              />
+            </div>
+
+            <Collapse className={composeStyles([
+              "d-sm-inline-flex",
+              "flex-sm-row-reverse",
+              classes.navigation,
+            ])} isOpen={this.state.isOpen} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <NavLink tag={Link} className={classes.navLink} to="/">Home</NavLink>
+                  <NavLink tag={Link} className={classes.navLink} to="/">Домівка</NavLink>
                 </NavItem>
 
                 <NavItem>
-                  <NavLink tag={Link} className={classes.navLink} to="/counter">Counter</NavLink>
+                  <NavLink tag={Link} className={classes.navLink} to="/tasks">Завдання</NavLink>
                 </NavItem>
 
                 <NavItem>
-                  <NavLink tag={Link} className={classes.navLink} to="/fetch-data">Fetch data</NavLink>
+                  <NavLink tag={Link} className={classes.navLink} to="/profile"><AccountCircleIcon/></NavLink>
                 </NavItem>
               </ul>
             </Collapse>

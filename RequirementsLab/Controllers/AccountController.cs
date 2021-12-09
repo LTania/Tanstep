@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using RequirementsLab.Core.Abstractions;
 using RequirementsLab.Core.DTO.Account;
 using RequirementsLab.Core.Entities;
 using System;
@@ -12,13 +13,15 @@ namespace RequirementsLab.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
+        private readonly IAccountService accountService;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IAccountService accountService)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.accountService = accountService;
         }
 
         [HttpPost]
@@ -89,20 +92,22 @@ namespace RequirementsLab.Controllers
 
             if (result.Succeeded)
             {
+                await signInManager.PasswordSignInAsync(username, password, false, false);
+
                 return Ok(GetByLogin(user.UserName).Result.Id);
             }
-
 
             return BadRequest();
         }
 
         [HttpGet]
         [Route("Me/")]
-        public int Me()
+        public UserStateDTO Me()
         {
             var idStr = userManager.GetUserId(HttpContext.User);
+            var idInt = int.TryParse(idStr, out var id) ? id : -1;
 
-            return int.TryParse(idStr, out var id) ? id : -1;
+            return accountService.UserState(idInt);
         }
 
         private async Task<User> GetByLogin(string login)

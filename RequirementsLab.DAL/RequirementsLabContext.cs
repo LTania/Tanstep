@@ -17,6 +17,8 @@ namespace RequirementsLab.DAL
 
         public DbSet<Requirement> Requirements { get; set; }
 
+        public DbSet<RequirementForPWTask> RequirementsForPWTask { get; set; }
+
         public DbSet<RequirementKeyWord> RequirementKeyWords { get; set; }
 
         public DbSet<Task> Tasks { get; set; }

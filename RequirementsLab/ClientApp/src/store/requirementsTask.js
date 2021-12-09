@@ -204,9 +204,9 @@ export const requirementsTaskReducer = (state = requirementsTaskState, action) =
 
         requirements = requirements.filter((requirement) => requirement.id !== id);
 
-        let stillEditing = true;
+        let stillEditing = state.isEditing;
         
-        if (state.isEditing && state.editingRequirement.id === id) {
+        if (state.editingRequirement && state.editingRequirement.id === id) {
           stillEditing = false;
         }
         

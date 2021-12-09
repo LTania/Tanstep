@@ -11,7 +11,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import * as backend from '../../store/startingTest';
-import StartingTestResult from './StartingTestResult';
+import * as authorizationBackend from '../../store/authorization';
+import Result from '../result/Result';
 
 const useStyles = makeStyles({
   root: {
@@ -130,6 +131,8 @@ export class StartingTestComponents extends Component {
     this.answers = null;
     this.currentAnswer = null;
     this.currentQuestion = null;
+    this.testStartTime = null;
+    this.testDuration = null;
 
     this.answersRef = {
       setValue: null,
@@ -141,6 +144,7 @@ export class StartingTestComponents extends Component {
 
     this.answers = [];
     this.currentAnswer = null;
+    this.testStartTime = Date.now();
   }
 
   componentDidUpdate() {
@@ -157,6 +161,10 @@ export class StartingTestComponents extends Component {
   }
 
   onFinishClicked = () => {
+    const currentTime = Date.now();
+
+    this.testDuration = currentTime - this.testStartTime;
+
     this.answers.push(this.currentAnswer);
 
     const answers = this.answers.map((answer) => ({
@@ -169,19 +177,28 @@ export class StartingTestComponents extends Component {
     };
 
     this.props.dispatch(backend.finishTest(answersDTO));
+    this.props.dispatch(authorizationBackend.markTestFinished());
   }
 
   render() {
     const { classes, questions, questionId, result } = this.props;
-
     if (result !== null) {
       const { level, levelName } = result;
 
+      const ms = this.testDuration;
+      const seconds = ~~(ms / 1000);
+      const minutes = ~~(seconds / 60);
+      const secondsRemainder = seconds - minutes * 60;
+
+      const time = `${minutes.toString().padStart(2, '0')}:${secondsRemainder.toString().padStart(2, '0')}`;
+
       return (
-        <StartingTestResult
+        <Result
           classes={classes}
           level={level}
           levelName={levelName}
+          time={time}
+          title={'Тест на визначення початкового рівня'}
         />
       );
     }

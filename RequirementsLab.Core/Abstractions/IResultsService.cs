@@ -5,5 +5,7 @@ namespace RequirementsLab.Core.Abstractions
     public interface IResultsService
     {
         void StoreResult(int taskId, int grade, int userId);
+
+        dynamic GetResults(int userId);
     }
 }
