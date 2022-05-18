@@ -141,8 +141,8 @@ export const RequirementsComponent = ({ classes, requirements, viewWords }) => {
   };
 
   return (
-    <div>
-    {requirements?.map((req, i) => 
+    <div data-testid="requirement-component">
+    {requirements?.map((req, i) =>
       <Card className={classes.requirement} key={i} onClick={() => { onRequirementClicked(req.words) }}>
         <CardContent className={classes.taskListContent}>
           <Typography >
@@ -202,12 +202,12 @@ export const PoorWordsField = ({classes, activeRequirementWords, addRemovePoorWo
       {
           isComponentVisible && 
           <Popup
-          classes={classes}
-          poorWords={selectedPoorWords}
-          popupCoords={popupCoords}
-          pwClicked={popupWord}
-          addOrRemovePw={addRemovePoorWord}
-        />
+            classes={classes}
+            poorWords={selectedPoorWords}
+            popupCoords={popupCoords}
+            pwClicked={popupWord}
+            addOrRemovePw={addRemovePoorWord}
+          />
       }
     </div>
   )
